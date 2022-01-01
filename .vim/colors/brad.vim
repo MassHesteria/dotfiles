@@ -1,8 +1,8 @@
 "********************************************************
 " Abstract: Vim color file                              *
 " Maintainer: Brad Hester                               *
-" Last Change: December 30, 2021                        *
-" Version: 1.5                                          *
+" Last Change: December 31, 2021                        *
+" Version: 1.6                                          *
 "********************************************************
 
 hi clear
@@ -12,9 +12,6 @@ endif
 
 " Color Scheme name
 let g:colors_name = "brad"
-
-" Custom keywords
-hi FlamesAPI            guifg=lightred
 
 " GUI colors
 hi Cursor               guifg=fg guibg=lightBlue
@@ -57,14 +54,12 @@ hi PreProc              gui=NONE guifg=LightSteelBlue
     hi Macro            gui=NONE guifg=LightSteelBlue
     hi PreCondit        gui=NONE guifg=LightSteelBlue
 
-hi Type                 gui=NONE guifg=lightYellow
-    hi StorageClass     gui=NONE guifg=cyan1
-    hi Structure        gui=NONE guifg=cyan1
-    hi Typedef          gui=NONE guifg=cyan1
+hi! Type            gui=italic guifg=#ff79c6
+hi StorageClass     gui=NONE guifg=cyan1
+hi Structure        gui=NONE guifg=cyan1
+hi Typedef          gui=NONE guifg=cyan1
 
 hi Underlined           gui=underline
 hi Ignore               guifg=bg
 hi Error                gui=bold guifg=White guibg=Red
 hi Todo                 guifg=green guibg=NONE
-
-hi CnxMsn               gui=NONE guifg=Pink

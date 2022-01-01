@@ -33,21 +33,18 @@ set cpoptions+=Z
 set showmatch
 set nospell
 set columns=100
-"aunmenu Buffers
 
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
+" Vim file explorer options
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
 "let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 30
-"augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-"augroup END
+"let g:netrw_altv = 1
+"let g:netrw_winsize = 30
 
 " C indent settings
-set cindent
-set cino=f3,{3,U3
+"set cindent
+"set cino=f3,{3,U3
+"set cino=f3,{3,U3
 
 " EOL settings
 set ffs=dos,unix
@@ -64,39 +61,19 @@ set tags=d:/work/flames20/tags
 
 " *************** Mappings ***************
 
-" Tag list
-nmap <c-l> :TlistToggle<CR>
-
 " Insert a blank line
-nmap + o<ESC>0d$
 nmap <CR> o<ESC>0d$
 nmap <S-CR> O<ESC>0d$
-
-" Move window position to left or right of screen one or two
-map <s-f9> :winpos 2 18<cr>
-map <s-f10> :winpos 960 18<cr>
-map <s-f11> :winpos 2000 18<cr>
-map <s-f12> :winpos 2900 18<cr>
-
-" Enclosed the current word in parentheses
-"nmap "( wbi(<ESC>lea)<ESC>b
-nmap "( wbi(<ESC>lwi)<ESC>b
-
-" Main
-nmap <C-F8> <F9>+iint main (int argc, char **argv)<ESC>+<F9>+i   {<ESC>++i   return (0);<ESC>++i   } /* main */<ESC>kk0w
 
 " Replace tabs with 3 spaces
 nmap <F12> :SALI<CR>:%s/\t/   /g<CR>:RELI<CR>:echo "All Tabs Replaced with 3 Spaces."<CR>zz
 
 " ************************
-"
-" /return\( \)*\(\(FFAILURE\)\|\(FSUCCESS\)\)
-"
-" ************************
 
 " Remove whitespace at the end of lines
 nmap <F10> :SALI<CR>:%s/\s\+$//g<CR>:RELI<CR>:echo "End of Line Whitespace Removed."<CR>zz
 
+" Remove carriage returns
 nmap <C-F11> :SALI<CR>:%s/\r//g<CR>:RELI<CR>:echo "Removed Carriage Returns."<CR>zz
 
 " Jump to the next tag in the list
@@ -110,25 +87,11 @@ nmap <S-F3> :cp<CR>zz
 " Insert a space
 nmap <S-Space> i<space><esc>
 
-" Move between files
-nmap <A-LEFT> :previous<CR>
-nmap <A-RIGHT> :next<CR>
-nmap <A-HOME> :first<CR>
-nmap <A-END> :last<CR>
-
-" Move between functions
-map [[ ?{<CR>w99[{/1311wuzhere<CR>
-map ][ /}<CR>b99]}/1311wuzhere<CR>
-map ]] j0[[%/{<CR>/1311wuzhere<CR>
-map [] k$][%?}<CR>/1311wuzhere<CR>
-
 " Open a new tab and tag to the current selection
 nmap " :call OPEN_TAG_IN_TAB()<CR>zz
 
 " Search for the current selection
 nmap <C-F3> :call SEARCH_FOR_SELECTION()<CR>zz
-
-nmap <C-F7> /\D\n<CR>0v$h"+ddd?\d\n<CR>?\s<CR>i <esc>"+p/1311wuzhere<CR>
 
 " Open / Close Tag List
 let g:Tlist_WinWidth=50
@@ -159,10 +122,6 @@ com Wq wq!
 com WQ wq!
 com -nargs=1 -complete=file E e! <args>
 
-" Show the SVN log
-command -nargs=0 ShowSvnLog !start tortoiseproc /command:log /path:"%:p"
-nmap <C-F12> :ShowSvnLog<cr><cr>
-
 " ************* Functions ******************
 
 let myCaseToggle=0
@@ -189,12 +148,6 @@ func SetEOL()
    execute ":e"
 endfunc
 
-" Setup for XML files
-fun! XmlStyle()
-   set columns=130
-   '[,']!u:\vimfiles\tidy -xml -i -q --preserve-entities yes --indent-spaces 3 --indent-attributes yes --wrap 0 --literal-attributes yes %
-endfunc
-
 " Show the current function name
 fun! ShowFuncName()
   let lnum = line(".")
@@ -205,16 +158,8 @@ fun! ShowFuncName()
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
 
-" Short cut to show the current function name
+" Shortcut to show the current function name
 nmap "F :call ShowFuncName()<CR>
-
-"
-nmap <f4> :sp<CR>gf
-
-"
-fun! LIST_TAGS()
-   exe "normal :tag ".expand("<cword>").""
-endfun
 
 " Open a new tab and tag to the current selection
 fun! OPEN_TAG_IN_TAB()
@@ -293,21 +238,3 @@ else
   set autoindent      " always set autoindenting on
 
 endif " has("autocmd")
-
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  if &sh =~ '\<cmd'
-    silent execute '!""C:\Program Files\Vim\vim72\diff" ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . '"'
-  else
-    silent execute '!C:\Program" Files\Vim\vim72\diff" ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-  endif
-endfunction

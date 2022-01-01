@@ -12,6 +12,13 @@ if exists("g:loaded_ternion")
 endif
 let g:loaded_ternion = 1
 
+" Enclosed the current word in parentheses
+"nmap "( wbi(<ESC>lea)<ESC>b
+nmap "( wbi(<ESC>lwi)<ESC>b
+
+" Main
+nmap <C-F8> <F9>+iint main (int argc, char **argv)<ESC>+<F9>+i   {<ESC>++i   return (0);<ESC>++i   } /* main */<ESC>kk0w
+
 " Insert comment
 nmap <F9> :call COMMENT_LINE()<CR>
 
