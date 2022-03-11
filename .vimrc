@@ -1,80 +1,88 @@
 " Use Vim settings, rather than Vi settings.
 set nocompatible
 
-" Syntax Editing setup
-au BufNewFile,BufReadPost *.aco set ft=aco
-au BufNewFile,BufReadPost *.ato set ft=ato
-au BufNewFile,BufReadPost *.prv set ft=c
-au BufNewFile,BufReadPost *.spc set ft=c
-au BufNewFile,BufReadPost *.typ set ft=c
-au BufNewFile,BufReadPost *.tpp set ft=c
-au BufNewFile,BufReadPost *.tp set ft=c
+"
+syntax on
+set termguicolors
+
+colorscheme gruvbox
+
+if has("gui_running")
+
+   set guifont=Consolas:h12
+   set lines=38
+   set columns=100
+   set guioptions-=T
+
+else
+
+   " Block cursor in Gitbash / Cygwin terminal
+   let &t_ti.="\e[1 q"
+   let &t_SI.="\e[5 q"
+   let &t_EI.="\e[1 q"
+   let &t_te.="\e[0 q"
+
+endif
+
+" Tabbing
+set expandtab
+set tabstop=3 softtabstop=3
+set shiftwidth=3
+set smartindent
+
+" Search
+set incsearch
+set hlsearch
+
+" Show matching brackets
+set showmatch
+
+" When using 'w!' on readonly files, don't reset readonly flag
+set cpoptions+=Z
+
+" Show the cursor position all the time.
+set ruler
+
+" Display incomplete commands
+set showcmd
 
 "
-"packadd! dracula
-"syntax enable
-"colorscheme dracula
+set wildmenu
+set wildmode=full
 
-" Personal settings
-colorscheme brad
-set lines=40
-set expandtab
-set tabstop=3
-"set guifont=Courier
-set guifont=Consolas:h12
-set shiftwidth=3
-set sw=3
-set noai
-set autochdir
-set nopvw
-set guioptions-=T
+"
 set ignorecase
-set cpoptions+=Z
-set showmatch
-set nospell
-set columns=100
+set smartcase
+
+" Splits should open below and to the right
+set splitbelow splitright
+
+"
+let mapleader = ","
+nnoremap <Leader>f :leftabove 30vsplit %:p:h<cr>
+nnoremap <Leader>c :q<cr>
 
 " Vim file explorer options
-"let g:netrw_banner = 0
-"let g:netrw_liststyle = 3
-"let g:netrw_browse_split = 4
-"let g:netrw_altv = 1
-"let g:netrw_winsize = 30
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 30
 
-" C indent settings
-"set cindent
-"set cino=f3,{3,U3
-"set cino=f3,{3,U3
+" ************* Mappings ******************
 
-" EOL settings
-set ffs=dos,unix
+" Remap splits navigation to just CTRL + hjkl
+"nmap <C-h> <C-w>h
+"nmap <C-j> <C-w>j
+"nmap <C-k> <C-w>k
+"nmap <C-l> <C-w>l
 
-" *****************************
 
-" Default tags
-set tags=d:/work/flames20/tags
+" Open a new tab and tag to the current selection
+nmap " :call OPEN_TAG_IN_TAB()<CR>zz
 
-" Fold regions
-"syn region cRegion start="#region" end="#endregion" fold
-"set foldmethod=syntax
-"set nofoldenable
-
-" *************** Mappings ***************
-
-" Insert a blank line
-nmap <CR> o<ESC>0d$
-nmap <S-CR> O<ESC>0d$
-
-" Replace tabs with 3 spaces
-nmap <F12> :SALI<CR>:%s/\t/   /g<CR>:RELI<CR>:echo "All Tabs Replaced with 3 Spaces."<CR>zz
-
-" ************************
-
-" Remove whitespace at the end of lines
-nmap <F10> :SALI<CR>:%s/\s\+$//g<CR>:RELI<CR>:echo "End of Line Whitespace Removed."<CR>zz
-
-" Remove carriage returns
-nmap <C-F11> :SALI<CR>:%s/\r//g<CR>:RELI<CR>:echo "Removed Carriage Returns."<CR>zz
+" Search for the current selection
+nmap <C-F3> :call SEARCH_FOR_SELECTION()<CR>zz
 
 " Jump to the next tag in the list
 nmap <F2> :tn<CR>zz
@@ -84,43 +92,25 @@ nmap <S-F2> :tp<CR>zz
 nmap <F3> :cn<CR>zz
 nmap <S-F3> :cp<CR>zz
 
-" Insert a space
-nmap <S-Space> i<space><esc>
-
-" Open a new tab and tag to the current selection
-nmap " :call OPEN_TAG_IN_TAB()<CR>zz
-
-" Search for the current selection
-nmap <C-F3> :call SEARCH_FOR_SELECTION()<CR>zz
-
-" Open / Close Tag List
-let g:Tlist_WinWidth=50
-nmap "T :TlistToggle<CR><C-W>h
-
-" ************* Commands *******************
-
-" Open a new tab and then tag to the argument
-com -nargs=1 -complete=tag TT tab tag <args>
-
 " Toggle case sensitivity
 nmap <C-I> :call ToggleIgnoreCase()<CR>
+
+" Shortcut to show the current function name
+nmap "F :call ShowFuncName()<CR>
+
+" Remove whitespace at the end of lines
+nmap <F10> mz:%s/\s\+$//g<CR>'z:echo "End of Line Whitespace Removed."<CR>zz
 
 " Toggle between file formats
 nmap <F11> :call SetEOL()<CR>
 
-" Change to the directory of the current file
-com CD cd %:p:h
+" Replace tabs with 3 spaces
+nmap <F12> mz:%s/\t/   /g<CR>'z:echo "All Tabs Replaced with 3 Spaces."<CR>zz
 
-" Save & Restore the cursor position
-com SALI let g:curcol=col(".")|let g:curlin=line(".")
-com RELI call cursor(g:curlin,g:curcol)
+" ************* Commands ******************
 
-"
-com Q q!
-com W w!
-com Wq wq!
-com WQ wq!
-com -nargs=1 -complete=file E e! <args>
+" Open a new tab and then tag to the argument
+com -nargs=1 -complete=tag TT tab tag <args>
 
 " ************* Functions ******************
 
@@ -158,9 +148,6 @@ fun! ShowFuncName()
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
 
-" Shortcut to show the current function name
-nmap "F :call ShowFuncName()<CR>
-
 " Open a new tab and tag to the current selection
 fun! OPEN_TAG_IN_TAB()
    exe "tab tag ". expand("<cword>")
@@ -170,71 +157,14 @@ fun! SEARCH_FOR_SELECTION()
    exe "vim /".expand("<cword>")."/ *"
 endfun
 
-" When started as "evim", evim.vim will configure the settings.
-if v:progname =~? "evim"
-   finish
+" In many terminal emulators the mouse works just fine.  By enabling it you
+" can position the cursor, Visually select and scroll with the mouse.
+" Only xterm can grab the mouse events when using the shift key, for other
+" terminals use ":", select text and press Esc.
+if has('mouse')
+  if &term =~ 'xterm'
+    set mouse=a
+  else
+    set mouse=nvi
+  endif
 endif
-
-" Do not create backup files.
-set nobackup
-
-" Create a backup file and delete it after writing is done.
-set writebackup
-
-" Number of commands to keep in history.
-set history=50
-
-" Show the cursor position all the time.
-set ruler
-
-" Display incomplete commands
-set showcmd
-
-" Perform incremental searching.
-set incsearch
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" Turn on highlighting search items
-syntax on
-set hlsearch
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-"if &t_Co > 2 || has("gui_running")
-   "syntax on
-   "set hlsearch
-"endif
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  augroup END
-
-else
-
-  set autoindent      " always set autoindenting on
-
-endif " has("autocmd")
