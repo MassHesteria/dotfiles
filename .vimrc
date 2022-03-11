@@ -63,6 +63,7 @@ nnoremap <Leader>f :leftabove 30vsplit %:p:h<cr>
 nnoremap <Leader>c :q<cr>
 
 " Vim file explorer options
+set nopvw
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -72,17 +73,16 @@ let g:netrw_winsize = 30
 " ************* Mappings ******************
 
 " Remap splits navigation to just CTRL + hjkl
-"nmap <C-h> <C-w>h
-"nmap <C-j> <C-w>j
-"nmap <C-k> <C-w>k
-"nmap <C-l> <C-w>l
-
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
 
 " Open a new tab and tag to the current selection
-nmap " :call OPEN_TAG_IN_TAB()<CR>zz
+nmap <Leader> :call OPEN_TAG_IN_TAB()<CR>zz
 
 " Search for the current selection
-nmap <C-F3> :call SEARCH_FOR_SELECTION()<CR>zz
+nmap <Leader><C-F> :call SEARCH_FOR_SELECTION()<CR>zz
 
 " Jump to the next tag in the list
 nmap <F2> :tn<CR>zz
@@ -154,7 +154,7 @@ fun! OPEN_TAG_IN_TAB()
 endfun
 
 fun! SEARCH_FOR_SELECTION()
-   exe "vim /".expand("<cword>")."/ *"
+   exe "vim /".expand("<cword>")."/ %:p:h/*"
 endfun
 
 " In many terminal emulators the mouse works just fine.  By enabling it you
