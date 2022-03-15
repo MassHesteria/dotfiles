@@ -3,9 +3,16 @@ set nocompatible
 
 "
 syntax on
-set termguicolors
+
+if has("termguicolors")
+   let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+   let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+   set termguicolors
+endif
 
 colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'medium'
+set background=dark
 
 if has("gui_running")
 
@@ -59,16 +66,19 @@ set splitbelow splitright
 
 "
 let mapleader = ","
-nnoremap <Leader>f :leftabove 30vsplit %:p:h<cr>
+"nnoremap <Leader>f :leftabove 30vsplit %:p:h<cr>
+"nnoremap <Leader>f :Lex %:p:h<cr>
+nnoremap <Leader>f :cd %:p:h<cr>:30Lex<cr>
 nnoremap <Leader>c :q<cr>
 
 " Vim file explorer options
-set nopvw
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 30
+"set nopvw
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 4
+"let g:netrw_altv = 1
+"let g:netrw_winsize = 30
+"let g:netrw_keepdir=0
 
 " ************* Mappings ******************
 
