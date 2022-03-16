@@ -66,19 +66,25 @@ set splitbelow splitright
 
 "
 let mapleader = ","
-"nnoremap <Leader>f :leftabove 30vsplit %:p:h<cr>
-"nnoremap <Leader>f :Lex %:p:h<cr>
-nnoremap <Leader>f :cd %:p:h<cr>:30Lex<cr>
 nnoremap <Leader>c :q<cr>
+nnoremap <Leader>C :on<cr>
+
+if v:version >= 800
+   nnoremap <Leader>f :cd %:p:h<cr>:30Lex<cr>
+else
+   nnoremap <Leader>f :cd %:p:h<cr>:30Vex<cr>
+endif
 
 " Vim file explorer options
 "set nopvw
-"let g:netrw_banner = 0
+let g:netrw_banner = 0
 "let g:netrw_liststyle = 3
-"let g:netrw_browse_split = 4
+let g:netrw_browse_split = 4
 "let g:netrw_altv = 1
 "let g:netrw_winsize = 30
 "let g:netrw_keepdir=0
+let g:netrw_preview = 1
+let g:netrw_alto = 0
 
 " ************* Mappings ******************
 
@@ -88,11 +94,14 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
+" Toggle windows
+nmap <Leader>w <C-w><C-w>
+
 " Open a new tab and tag to the current selection
 nmap <Leader> :call OPEN_TAG_IN_TAB()<CR>zz
 
 " Search for the current selection
-nmap <Leader><C-F> :call SEARCH_FOR_SELECTION()<CR>zz
+"nmap <Leader>* :call SEARCH_FOR_SELECTION()<CR>zz
 
 " Jump to the next tag in the list
 nmap <F2> :tn<CR>zz
@@ -164,7 +173,7 @@ fun! OPEN_TAG_IN_TAB()
 endfun
 
 fun! SEARCH_FOR_SELECTION()
-   exe "vim /".expand("<cword>")."/ %:p:h/*"
+   exe "vim /".expand("<cword>")."/ ".expand("%:p:h")."/*"
 endfun
 
 " In many terminal emulators the mouse works just fine.  By enabling it you
