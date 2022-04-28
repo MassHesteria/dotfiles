@@ -56,6 +56,9 @@ set ruler
 " Display incomplete commands
 set showcmd
 
+" Flash the screen instead of beeping
+set visualbell
+
 "
 set wildmenu
 set wildmode=full
