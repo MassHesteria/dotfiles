@@ -104,11 +104,14 @@ nmap <C-l> <C-w>l
 " Toggle windows
 nmap <Leader>w <C-w><C-w>
 
+" Toggle buffers
+nmap <Leader>b :bn<cr>
+
 " Toggle line numbers
 nmap <Leader>n :set nonumber!<cr>
 
 " Open a new tab and tag to the current selection
-nmap <Leader> :call OPEN_TAG_IN_TAB()<CR>zz
+nmap " :call OPEN_TAG_IN_TAB()<CR>zz
 
 " Search for the current selection
 "nmap <Leader>* :call SEARCH_FOR_SELECTION()<CR>zz
@@ -140,6 +143,9 @@ nmap <F12> mz:%s/\t/   /g<CR>'z:echo "All Tabs Replaced with 3 Spaces."<CR>zz
 
 " Open a new tab and then tag to the argument
 com -nargs=1 -complete=tag TT tab tag <args>
+
+" Change to the directory of the current file
+com CD cd %:p:h
 
 " ************* Functions ******************
 
