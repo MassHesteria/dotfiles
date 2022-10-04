@@ -20,6 +20,7 @@ if has("gui_running")
    set lines=38
    set columns=100
    set guioptions-=T
+   hi Comment guifg=#7fca7f gui=none
 
 else
 
@@ -42,7 +43,7 @@ set incsearch
 set hlsearch
 
 " Show line numbers
-set number
+"set number
 
 " Show matching brackets
 set showmatch
@@ -102,6 +103,9 @@ nmap <C-l> <C-w>l
 
 " Toggle windows
 nmap <Leader>w <C-w><C-w>
+
+" Toggle line numbers
+nmap <Leader>n :set nonumber!<cr>
 
 " Open a new tab and tag to the current selection
 nmap <Leader> :call OPEN_TAG_IN_TAB()<CR>zz
