@@ -1,4 +1,4 @@
 # Windows specific configuration
 
-PATH=/d/MinGW/bin:$PATH
+PATH=$PATH:/d/MinGW/bin
 PS1='\[\033]0;$PWD\007\]\n\[\033[35m\]\u@\h \[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[0m\]\n$ '
